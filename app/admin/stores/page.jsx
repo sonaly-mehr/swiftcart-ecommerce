@@ -1,28 +1,42 @@
 'use client'
-import { storesDummyData } from "@/assets/assets"
 import StoreInfo from "@/components/admin/StoreInfo"
 import Loading from "@/components/Loading"
+import axios from "axios"
+import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
 export default function AdminStores() {
+    const { data: session, status } = useSession()
 
     const [stores, setStores] = useState([])
     const [loading, setLoading] = useState(true)
 
     const fetchStores = async () => {
-        setStores(storesDummyData)
+        try {
+            const { data } = await axios.get('/api/admin/stores')
+            setStores(data.stores)
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
         setLoading(false)
     }
 
     const toggleIsActive = async (storeId) => {
-        // Logic to toggle the status of a store
-
+        try {
+            const { data } = await axios.post('/api/admin/toggle-store', {storeId})
+            await fetchStores()
+            toast.success(data.message)
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
     }
 
     useEffect(() => {
-        fetchStores()
-    }, [])
+        if(session?.user) {
+            fetchStores()
+        }
+    }, [session?.user])
 
     return !loading ? (
         <div className="text-slate-500 mb-28">

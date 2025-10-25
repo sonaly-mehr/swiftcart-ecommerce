@@ -2,10 +2,14 @@
 import { dummyAdminDashboardData } from "@/assets/assets"
 import Loading from "@/components/Loading"
 import OrdersAreaChart from "@/components/OrdersAreaChart"
+import axios from "axios"
 import { CircleDollarSignIcon, ShoppingBasketIcon, StoreIcon, TagsIcon } from "lucide-react"
+import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 export default function AdminDashboard() {
+    const { data: session, status } = useSession()
 
     const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
 
@@ -26,13 +30,24 @@ export default function AdminDashboard() {
     ]
 
     const fetchDashboardData = async () => {
-        setDashboardData(dummyAdminDashboardData)
+        try {
+
+            const { data } = await axios.get('/api/admin/dashboard')
+            setDashboardData(data.dashboardData)
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
         setLoading(false)
     }
 
     useEffect(() => {
-        fetchDashboardData()
-    }, [])
+        if (status === "authenticated") {
+            fetchDashboardData()
+        } else if (status === "unauthenticated") {
+            setLoading(false)
+            toast.error("Please log in to access admin dashboard")
+        }
+    }, [status])
 
     if (loading) return <Loading />
 

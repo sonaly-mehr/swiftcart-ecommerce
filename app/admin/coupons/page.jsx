@@ -3,9 +3,11 @@ import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import toast from "react-hot-toast"
 import { DeleteIcon } from "lucide-react"
-import { couponDummyData } from "@/assets/assets"
+import axios from "axios"
+import { useSession } from "next-auth/react"
 
 export default function AdminCoupons() {
+    const {data: session, status } = useSession()
 
     const [coupons, setCoupons] = useState([])
 
@@ -20,12 +22,26 @@ export default function AdminCoupons() {
     })
 
     const fetchCoupons = async () => {
-        setCoupons(couponDummyData)
+        try {
+            const { data } = await axios.get('/api/admin/coupon')
+            setCoupons(data.coupons)
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
     }
 
     const handleAddCoupon = async (e) => {
         e.preventDefault()
-        // Logic to add a coupon
+        try {
+            newCoupon.discount = Number(newCoupon.discount)
+            newCoupon.expiresAt = new Date(newCoupon.expiresAt)
+
+            const { data } = await axios.post('/api/admin/coupon',{coupon: newCoupon})
+            toast.success(data.message)
+            await fetchCoupons()
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
 
 
     }
@@ -35,14 +51,23 @@ export default function AdminCoupons() {
     }
 
     const deleteCoupon = async (code) => {
-        // Logic to delete a coupon
-
+        try {
+            const confirm = window.confirm("Are you sure you want to delete this coupon?")
+            if(!confirm) return;
+            await axios.delete(`/api/admin/coupon?code=${code}`)
+            await fetchCoupons()
+            toast.success("Coupon deleted successfully")
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
 
     }
 
     useEffect(() => {
-        fetchCoupons();
-    }, [])
+        if(session?.user) {
+            fetchCoupons();
+        }
+    }, [session?.user])
 
     return (
         <div className="text-slate-500 mb-40">
