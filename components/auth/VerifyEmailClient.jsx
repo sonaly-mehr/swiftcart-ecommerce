@@ -42,7 +42,7 @@ export default function VerifyEmailClient() {
           <div>
             <div className="mx-auto h-12 w-auto flex justify-center">
               <div className="text-2xl font-bold text-indigo-600">
-                SwiftCart
+                TradersSquare
               </div>
             </div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">

@@ -22,23 +22,23 @@ const Navbar = () => {
     }
 
     // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsDropdownOpen(false);
-            }
-        };
+    // useEffect(() => {
+    //     const handleClickOutside = (event) => {
+    //         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    //             setIsDropdownOpen(false);
+    //         }
+    //     };
 
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+    //     document.addEventListener('mousedown', handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener('mousedown', handleClickOutside);
+    //     };
+    // }, []);
 
 const handleSignOut = async () => {
     try {
         console.log('Attempting to sign out...');
-        setIsDropdownOpen(false);
+        // setIsDropdownOpen(false);
         
         // Use NextAuth's built-in signOut function
         await signOut({ 
@@ -68,7 +68,7 @@ const handleSignOut = async () => {
     }
 }
     const handleProfile = () => {
-        setIsDropdownOpen(false);
+        // setIsDropdownOpen(false);
         router.push('/profile');
     }
 
@@ -78,7 +78,7 @@ const handleSignOut = async () => {
                 <div className="flex items-center justify-between max-w-7xl mx-auto py-4 transition-all">
 
                     <Link href="/" className="relative text-4xl font-semibold text-slate-700">
-                        <span className="text-green-600">swift</span>cart<span className="text-green-600 text-5xl leading-0">.</span>
+                        <span className="text-green-600">traders</span>square<span className="text-green-600 text-5xl leading-0">.</span>
                         <p className="absolute text-xs font-semibold -top-1 -right-8 px-3 p-0.5 rounded-full flex items-center gap-2 text-white bg-green-500">
                             plus
                         </p>
@@ -161,7 +161,7 @@ const handleSignOut = async () => {
                                         
                                         <button
                                             onClick={() => {
-                                                setIsDropdownOpen(false);
+                                                // setIsDropdownOpen(false);
                                                 router.push('/settings');
                                             }}
                                             className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"

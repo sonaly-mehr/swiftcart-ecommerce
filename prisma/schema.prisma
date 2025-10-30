@@ -60,6 +60,12 @@ model User {
   resetToken    String?   @map("reset_token")
   resetTokenExpiry DateTime? @map("reset_token_expiry")
 
+// Membership fields
+  isPlusMember  Boolean   @default(false)
+  stripeCustomerId String? @map("stripe_customer_id")
+  subscriptionId String? @map("subscription_id")
+  
+
   // Relations
   accounts      Account[]
   sessions      Session[]

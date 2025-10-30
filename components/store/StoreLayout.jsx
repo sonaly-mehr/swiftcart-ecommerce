@@ -5,24 +5,34 @@ import Link from "next/link"
 import { ArrowRightIcon } from "lucide-react"
 import SellerNavbar from "./StoreNavbar"
 import SellerSidebar from "./StoreSidebar"
-import { dummyStoreData } from "@/assets/assets"
+import axios from "axios"
+import { useSession } from "next-auth/react"
 
 const StoreLayout = ({ children }) => {
-
+    const { data: session, status } = useSession()
 
     const [isSeller, setIsSeller] = useState(false)
     const [loading, setLoading] = useState(true)
     const [storeInfo, setStoreInfo] = useState(null)
 
     const fetchIsSeller = async () => {
-        setIsSeller(true)
-        setStoreInfo(dummyStoreData)
-        setLoading(false)
+        try {
+            const { data } = await axios.get('/api/store/is-seller')
+            setIsSeller(data.isSeller)
+            setStoreInfo(data.storeInfo)
+        } catch (error) {
+            console.log(error)
+        }
+        finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
-        fetchIsSeller()
-    }, [])
+        if (status === "authenticated") {
+            fetchIsSeller()
+        }
+    }, [status, session])
 
     return loading ? (
         <Loading />

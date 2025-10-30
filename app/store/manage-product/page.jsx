@@ -3,9 +3,11 @@ import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import Image from "next/image"
 import Loading from "@/components/Loading"
-import { productDummyData } from "@/assets/assets"
+import axios from "axios"
+import { useSession } from "next-auth/react"
 
 export default function StoreManageProducts() {
+    const{data:session, status} = useSession()
 
     const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
 
@@ -13,19 +15,32 @@ export default function StoreManageProducts() {
     const [products, setProducts] = useState([])
 
     const fetchProducts = async () => {
-        setProducts(productDummyData)
+        try {
+
+             const { data } = await axios.get('/api/store/product')
+             setProducts(data.products.sort((a, b)=> new Date(b.createdAt) - new Date(a.createdAt)))
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
         setLoading(false)
     }
 
     const toggleStock = async (productId) => {
-        // Logic to toggle the stock of a product
+        try {
+            const { data } = await axios.post('/api/store/stock-toggle',{ productId })
+            setProducts(prevProducts => prevProducts.map(product =>  product.id === productId ? {...product, inStock: !product.inStock} : product))
 
-
+            toast.success(data.message)
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
     }
 
     useEffect(() => {
+        if(session?.user    ){
             fetchProducts()
-    }, [])
+        }  
+    }, [session?.user])
 
     if (loading) return <Loading />
 

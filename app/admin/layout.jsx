@@ -5,8 +5,8 @@ import { getServerSession } from "next-auth";
 import SignIn from "../(public)/(auth)/signin/page";
 
 export const metadata = {
-    title: "SwiftCart - Admin",
-    description: "SwiftCart - Admin Dashboard",
+    title: "TradersSquare - Admin",
+    description: "TradersSquare - Admin Dashboard",
 };
 
 export default async function RootAdminLayout({ children }) {

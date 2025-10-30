@@ -1,9 +1,14 @@
 'use client'
+import { addAddress } from "@/lib/features/address/addressSlice"
+import axios from "axios"
 import { XIcon } from "lucide-react"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
+import { useDispatch } from "react-redux"
 
 const AddressModal = ({ setShowAddressModal }) => {
+
+     const dispatch = useDispatch()
 
     const [address, setAddress] = useState({
         name: '',
@@ -25,8 +30,15 @@ const AddressModal = ({ setShowAddressModal }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        setShowAddressModal(false)
+        try {
+            const { data } = await axios.post('/api/address', {address})
+            dispatch(addAddress(data.newAddress))
+            toast.success(data.message)
+            setShowAddressModal(false)
+        } catch (error) {
+            console.log(error)
+            toast.error(error?.response?.data?.message || error.message)
+        }
     }
 
     return (

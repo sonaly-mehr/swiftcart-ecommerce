@@ -55,9 +55,9 @@ const OrderItem = ({ order }) => {
 
                 <td className="text-left space-y-2 text-sm max-md:hidden">
                     <div
-                        className={`flex items-center justify-center gap-1 rounded-full p-1 ${order.status === 'confirmed'
+                        className={`flex uppercase text-xs justify-center gap-1 rounded-full whitespace-nowrap items-center p-1.5 ${order.status === 'ORDER_PLACED'
                             ? 'text-yellow-500 bg-yellow-100'
-                            : order.status === 'delivered'
+                            : order.status === 'DELIVERED'
                                 ? 'text-green-500 bg-green-100'
                                 : 'text-slate-500 bg-slate-100'
                             }`}

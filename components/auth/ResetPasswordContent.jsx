@@ -105,7 +105,7 @@ export default function ResetPasswordContent() {
                 <div className="max-w-md w-full space-y-8">
                     <div>
                         <div className="mx-auto h-12 w-auto flex justify-center">
-                            <div className="text-2xl font-bold text-indigo-600">SwiftCart</div>
+                            <div className="text-2xl font-bold text-indigo-600">TradersSquare</div>
                         </div>
                         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                             Invalid Reset Link
@@ -134,7 +134,7 @@ export default function ResetPasswordContent() {
                 <div className="max-w-md w-full space-y-8">
                     <div>
                         <div className="mx-auto h-12 w-auto flex justify-center">
-                            <div className="text-2xl font-bold text-indigo-600">SwiftCart</div>
+                            <div className="text-2xl font-bold text-indigo-600">TradersSquare</div>
                         </div>
                         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                             Password Reset Successfully
@@ -162,7 +162,7 @@ export default function ResetPasswordContent() {
             <div className="max-w-md w-full space-y-8">
                 <div>
                     <div className="mx-auto h-12 w-auto flex justify-center">
-                        <div className="text-2xl font-bold text-indigo-600">SwiftCart</div>
+                        <div className="text-2xl font-bold text-indigo-600">TradersSquare</div>
                     </div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                         Reset Your Password

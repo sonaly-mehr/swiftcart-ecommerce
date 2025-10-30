@@ -1,9 +1,12 @@
 'use client'
 import { useEffect, useState } from "react"
 import Loading from "@/components/Loading"
-import { orderDummyData } from "@/assets/assets"
+import axios from "axios"
+import toast from "react-hot-toast"
+import { useSession } from "next-auth/react"
 
 export default function StoreOrders() {
+    const {data: session, status} = useSession()
     const [orders, setOrders] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedOrder, setSelectedOrder] = useState(null)
@@ -11,14 +14,29 @@ export default function StoreOrders() {
 
 
     const fetchOrders = async () => {
-       setOrders(orderDummyData)
-       setLoading(false)
+       try {
+
+        const { data } = await axios.get('/api/store/orders')
+        setOrders(data.orders)
+       } catch (error) {
+        toast.error(error?.response?.data?.error || error.message)
+       }finally{
+        setLoading(false)
+       }
     }
 
     const updateOrderStatus = async (orderId, status) => {
-        // Logic to update the status of an order
-
-
+        try {
+            await axios.post('/api/store/orders',{orderId, status})
+            setOrders(prev =>
+                prev.map(order => 
+                    order.id === orderId ? {...order, status} : order
+                )
+            )
+            toast.success('Order status updated!')
+       } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+       }
     }
 
     const openModal = (order) => {
@@ -32,8 +50,10 @@ export default function StoreOrders() {
     }
 
     useEffect(() => {
-        fetchOrders()
-    }, [])
+        if (session?.user) {
+            fetchOrders()
+        }
+    }, [session?.user])
 
     if (loading) return <Loading />
 
@@ -120,7 +140,7 @@ export default function StoreOrders() {
                                 {selectedOrder.orderItems.map((item, i) => (
                                     <div key={i} className="flex items-center gap-4 border border-slate-100 shadow rounded p-2">
                                         <img
-                                            src={item.product.images?.[0].src || item.product.images?.[0]}
+                                            src={item.product?.images?.[0]}
                                             alt={item.product?.name}
                                             className="w-16 h-16 object-cover rounded"
                                         />

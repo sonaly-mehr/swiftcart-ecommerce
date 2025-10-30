@@ -5,8 +5,8 @@ import { Providers } from "@/components/store/Providers";
 const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
 export const metadata = {
-    title: "SwiftCart. - Shop smarter",
-    description: "SwiftCart. - Shop smarter",
+    title: "TradersSquare. - Shop smarter",
+    description: "TradersSquare. - Shop smarter",
 };
 
 export default function RootLayout({ children }) {

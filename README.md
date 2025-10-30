@@ -1,6 +1,6 @@
 <div align="center">
   <h1>
-   SwiftCart</h1>
+   TradersSquare</h1>
   <p>
     An open-source multi-vendor e-commerce platform built with Next.js and Tailwind CSS.
   </p>

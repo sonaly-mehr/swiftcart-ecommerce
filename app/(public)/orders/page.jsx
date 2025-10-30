@@ -2,15 +2,47 @@
 import PageTitle from "@/components/PageTitle"
 import { useEffect, useState } from "react";
 import OrderItem from "@/components/OrderItem";
-import { orderDummyData } from "@/assets/assets";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
+import { useSession } from "next-auth/react";
 
 export default function Orders() {
 
+    const { data: session, status } = useSession();
+    console.log("status", status)
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true)
+
+    const router = useRouter()
 
     useEffect(() => {
-        setOrders(orderDummyData)
-    }, []);
+        const fetchOrders = async () => {
+            try {
+                const { data } = await axios.get('/api/orders')
+                setOrders(data.orders)
+                setLoading(false)
+            } catch (error) {
+                toast.error(error?.response?.data?.error || error.message)
+                setLoading(false)
+            }
+        }
+
+        if (status === "authenticated") {
+            fetchOrders()
+        } else if (status === "unauthenticated") {
+            router.push('/')
+        }
+    }, [status, router]);
+
+    if (status === "loading" || loading) {
+        return <Loading />
+    }
+
+    if (status === "unauthenticated") {
+        return <Loading /> // or null
+    }
 
     return (
         <div className="min-h-[70vh] mx-6">

@@ -1,5 +1,5 @@
 {
-  "name": "swiftcart",
+  "name": "traderssquare",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -32,6 +32,7 @@
     "react-hot-toast": "^2.5.2",
     "react-redux": "^9.2.0",
     "recharts": "^3.1.2",
+    "stripe": "^19.2.0",
     "ws": "^8.18.3",
     "zod": "^4.1.12"
   },
